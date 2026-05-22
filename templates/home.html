@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Resume Builder{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Онлайн конструктор резюме</p>
+        <h1>Створіть акуратне резюме за кілька хвилин</h1>
+        <p class="lead">Заповніть профіль, додайте досвід, освіту й навички, а потім збережіть готову сторінку або роздрукуйте її як PDF.</p>
+        <div class="actions">
+            {% if user.is_authenticated %}
+                <a class="button" href="{% url 'resume_create' %}">Створити резюме</a>
+                <a class="button button-secondary" href="{% url 'resume_list' %}">Мої резюме</a>
+            {% else %}
+                <a class="button" href="{% url 'register' %}">Почати безкоштовно</a>
+                <a class="button button-secondary" href="{% url 'login' %}">Увійти</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="hero-preview" aria-label="Приклад резюме">
+        <div class="preview-header"></div>
+        <div class="preview-line wide"></div>
+        <div class="preview-line"></div>
+        <div class="preview-grid">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="preview-line wide"></div>
+        <div class="preview-line wide"></div>
+        <div class="preview-line"></div>
+    </div>
+</section>
+
+<section class="section-grid">
+    <div>
+        <h2>Шаблони</h2>
+        <div class="card-list">
+            {% for template in templates %}
+                <article class="card">
+                    <h3>{{ template.name }}</h3>
+                    <p>{{ template.description|default:'Класичний шаблон для швидкого старту.' }}</p>
+                </article>
+            {% empty %}
+                <article class="card">
+                    <h3>Базовий шаблон</h3>
+                    <p>Поки немає шаблонів в адмінці, резюме створюються у чистому стандартному вигляді.</p>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+        <h2>Оголошення</h2>
+        <div class="card-list">
+            {% for item in announcements %}
+                <article class="card">
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item.body }}</p>
+                </article>
+            {% empty %}
+                <article class="card">
+                    <h3>Все готово</h3>
+                    <p>Тут з'являтимуться новини та підказки для користувачів.</p>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">Конструктор</p>
+        <h1>{{ page_title }}</h1>
+    </div>
+    {% if resume.pk %}
+        <a class="button button-secondary" href="{% url 'resume_detail' resume.pk %}">До перегляду</a>
+    {% endif %}
+</div>
+
+<form class="builder-form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <section class="form-section">
+        <h2>Основна інформація</h2>
+        <div class="form-grid">
+            {% for field in form %}
+                <div class="form-field{% if field.name == 'summary' %} form-field-wide{% endif %}">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="field-error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="form-section">
+        <h2>Досвід роботи</h2>
+        {{ experience_formset.management_form }}
+        <div class="formset-list">
+            {% for item in experience_formset %}
+                <div class="formset-card">
+                    {{ item.id }}
+                    <div class="form-grid">
+                        {% for field in item.visible_fields %}
+                            <div class="form-field{% if field.name == 'description' %} form-field-wide{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="field-error">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="form-section">
+        <h2>Освіта</h2>
+        {{ education_formset.management_form }}
+        <div class="formset-list">
+            {% for item in education_formset %}
+                <div class="formset-card">
+                    {{ item.id }}
+                    <div class="form-grid">
+                        {% for field in item.visible_fields %}
+                            <div class="form-field{% if field.name == 'description' %} form-field-wide{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="field-error">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="form-section">
+        <h2>Навички</h2>
+        {{ skill_formset.management_form }}
+        <div class="skill-formset">
+            {% for item in skill_formset %}
+                <div class="formset-card">
+                    {{ item.id }}
+                    {% for field in item.visible_fields %}
+                        <div class="form-field">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="field-error">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <div class="form-actions">
+        <button class="button" type="submit">Зберегти</button>
+        <a class="button button-secondary" href="{% url 'resume_list' %}">Скасувати</a>
+    </div>
+</form>
+{% endblock %}

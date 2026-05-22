@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Мої резюме{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">Кабінет</p>
+        <h1>Мої резюме</h1>
+    </div>
+    <a class="button" href="{% url 'resume_create' %}">Створити резюме</a>
+</div>
+
+<div class="resume-list">
+    {% for resume in resumes %}
+        <article class="resume-card">
+            <div>
+                <h2><a href="{% url 'resume_detail' resume.pk %}">{{ resume.title }}</a></h2>
+                <p>{{ resume.full_name }}{% if resume.job_title %} · {{ resume.job_title }}{% endif %}</p>
+                <small>Оновлено: {{ resume.updated_at|date:'d.m.Y H:i' }}</small>
+            </div>
+            <div class="card-actions">
+                <a class="button button-small button-secondary" href="{% url 'resume_update' resume.pk %}">Редагувати</a>
+                <a class="button button-small" href="{% url 'resume_detail' resume.pk %}">Перегляд</a>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state">
+            <h2>Резюме ще немає</h2>
+            <p>Створіть перше резюме, додайте досвід, освіту та навички.</p>
+            <a class="button" href="{% url 'resume_create' %}">Створити резюме</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

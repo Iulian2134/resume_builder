@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ resume.title }}{% endblock %}
+
+{% block content %}
+<div class="page-heading no-print">
+    <div>
+        <p class="eyebrow">Перегляд</p>
+        <h1>{{ resume.title }}</h1>
+    </div>
+    <div class="actions">
+        <button class="button button-secondary" type="button" onclick="window.print()">Друк / PDF</button>
+        <a class="button button-secondary" href="{% url 'resume_update' resume.pk %}">Редагувати</a>
+        <a class="button button-danger" href="{% url 'resume_delete' resume.pk %}">Видалити</a>
+    </div>
+</div>
+
+<article class="resume-preview">
+    <header class="resume-preview-header">
+        {% if resume.photo %}
+            <img src="{{ resume.photo.url }}" alt="{{ resume.full_name }}">
+        {% endif %}
+        <div>
+            <h1>{{ resume.full_name }}</h1>
+            {% if resume.job_title %}<p class="job-title">{{ resume.job_title }}</p>{% endif %}
+            <div class="contact-line">
+                {% if resume.email %}<span>{{ resume.email }}</span>{% endif %}
+                {% if resume.phone %}<span>{{ resume.phone }}</span>{% endif %}
+                {% if resume.location %}<span>{{ resume.location }}</span>{% endif %}
+                {% if resume.website %}<span>{{ resume.website }}</span>{% endif %}
+            </div>
+        </div>
+    </header>
+
+    {% if resume.summary %}
+        <section>
+            <h2>Про себе</h2>
+            <p>{{ resume.summary|linebreaksbr }}</p>
+        </section>
+    {% endif %}
+
+    {% if resume.experiences.exists %}
+        <section>
+            <h2>Досвід</h2>
+            {% for item in resume.experiences.all %}
+                <div class="resume-entry">
+                    <h3>{{ item.position }}</h3>
+                    <p class="muted">{{ item.company }}{% if item.start_date or item.end_date %} · {{ item.start_date }} - {{ item.end_date|default:'дотепер' }}{% endif %}</p>
+                    {% if item.description %}<p>{{ item.description|linebreaksbr }}</p>{% endif %}
+                </div>
+            {% endfor %}
+        </section>
+    {% endif %}
+
+    {% if resume.education.exists %}
+        <section>
+            <h2>Освіта</h2>
+            {% for item in resume.education.all %}
+                <div class="resume-entry">
+                    <h3>{{ item.institution }}</h3>
+                    <p class="muted">{{ item.degree }}{% if item.start_date or item.end_date %} · {{ item.start_date }} - {{ item.end_date }}{% endif %}</p>
+                    {% if item.description %}<p>{{ item.description|linebreaksbr }}</p>{% endif %}
+                </div>
+            {% endfor %}
+        </section>
+    {% endif %}
+
+    {% if resume.skills.exists %}
+        <section>
+            <h2>Навички</h2>
+            <div class="skill-list">
+                {% for item in resume.skills.all %}
+                    <span>{{ item.name }}{% if item.level %} · {{ item.level }}{% endif %}</span>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+</article>
+{% endblock %}

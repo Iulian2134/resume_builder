@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Реєстрація{% endblock %}
+
+{% block content %}
+<div class="auth-panel">
+    <p class="eyebrow">Новий акаунт</p>
+    <h1>Реєстрація</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button" type="submit">Зареєструватися</button>
+    </form>
+    <p class="muted">Вже маєте акаунт? <a href="{% url 'login' %}">Увійти</a></p>
+</div>
+{% endblock %}
