@@ -9,8 +9,11 @@
 </head>
 <body>
     <header class="site-header">
-        <nav class="nav">
-            <a class="brand" href="{% url 'home' %}">Resume Builder</a>
+        <nav class="nav" aria-label="Головна навігація">
+            <a class="brand" href="{% url 'home' %}">
+                <span class="brand-mark">RB</span>
+                <span>Resume Builder</span>
+            </a>
             <div class="nav-links">
                 <a href="{% url 'home' %}">Головна</a>
                 {% if user.is_authenticated %}

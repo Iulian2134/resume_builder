@@ -4,44 +4,88 @@
 
 {% block content %}
 <section class="hero">
-    <div>
+    <div class="hero-copy">
         <p class="eyebrow">Онлайн конструктор резюме</p>
-        <h1>Створіть акуратне резюме за кілька хвилин</h1>
-        <p class="lead">Заповніть профіль, додайте досвід, освіту й навички, а потім збережіть готову сторінку або роздрукуйте її як PDF.</p>
+        <h1>Зберіть охайне резюме без зайвої метушні</h1>
+        <p class="lead">Заповніть профіль, додайте досвід, освіту й навички, перегляньте результат і роздрукуйте готову сторінку як PDF.</p>
         <div class="actions">
             {% if user.is_authenticated %}
                 <a class="button" href="{% url 'resume_create' %}">Створити резюме</a>
-                <a class="button button-secondary" href="{% url 'resume_list' %}">Мої резюме</a>
+                <a class="button button-secondary" href="{% url 'resume_list' %}">Відкрити кабінет</a>
             {% else %}
                 <a class="button" href="{% url 'register' %}">Почати безкоштовно</a>
                 <a class="button button-secondary" href="{% url 'login' %}">Увійти</a>
             {% endif %}
         </div>
     </div>
-    <div class="hero-preview" aria-label="Приклад резюме">
-        <div class="preview-header"></div>
-        <div class="preview-line wide"></div>
-        <div class="preview-line"></div>
-        <div class="preview-grid">
-            <span></span><span></span><span></span>
+
+    <div class="hero-card" aria-label="Приклад резюме">
+        <div class="resume-paper">
+            <div class="paper-top">
+                <span class="avatar-dot"></span>
+                <div>
+                    <span class="paper-line strong"></span>
+                    <span class="paper-line short"></span>
+                </div>
+            </div>
+            <div class="paper-columns">
+                <div>
+                    <span class="paper-label"></span>
+                    <span class="paper-line"></span>
+                    <span class="paper-line"></span>
+                    <span class="paper-line short"></span>
+                </div>
+                <div>
+                    <span class="paper-label amber"></span>
+                    <span class="pill-row"></span>
+                    <span class="pill-row wide"></span>
+                    <span class="pill-row"></span>
+                </div>
+            </div>
         </div>
-        <div class="preview-line wide"></div>
-        <div class="preview-line wide"></div>
-        <div class="preview-line"></div>
+        <div class="hero-metric metric-one">
+            <strong>3</strong>
+            <span>секції резюме</span>
+        </div>
+        <div class="hero-metric metric-two">
+            <strong>PDF</strong>
+            <span>через друк</span>
+        </div>
     </div>
+</section>
+
+<section class="workflow">
+    <article>
+        <span>01</span>
+        <h2>Створіть акаунт</h2>
+        <p>Кожен користувач бачить тільки власні резюме.</p>
+    </article>
+    <article>
+        <span>02</span>
+        <h2>Заповніть блоки</h2>
+        <p>Основна інформація, досвід, освіта й навички в одній формі.</p>
+    </article>
+    <article>
+        <span>03</span>
+        <h2>Перегляньте результат</h2>
+        <p>Готова сторінка виглядає як резюме і підходить для друку.</p>
+    </article>
 </section>
 
 <section class="section-grid">
     <div>
-        <h2>Шаблони</h2>
+        <div class="section-title">
+            <p class="eyebrow">Шаблони</p>
+            <h2>Варіанти для швидкого старту</h2>
+        </div>
         <div class="card-list">
             {% for template in templates %}
-                <article class="card">
+                <article class="card accent-card">
                     <h3>{{ template.name }}</h3>
                     <p>{{ template.description|default:'Класичний шаблон для швидкого старту.' }}</p>
                 </article>
             {% empty %}
-                <article class="card">
+                <article class="card accent-card">
                     <h3>Базовий шаблон</h3>
                     <p>Поки немає шаблонів в адмінці, резюме створюються у чистому стандартному вигляді.</p>
                 </article>
@@ -49,7 +93,10 @@
         </div>
     </div>
     <div>
-        <h2>Оголошення</h2>
+        <div class="section-title">
+            <p class="eyebrow">Оголошення</p>
+            <h2>Новини проєкту</h2>
+        </div>
         <div class="card-list">
             {% for item in announcements %}
                 <article class="card">
